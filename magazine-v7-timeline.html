@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine V7: Event Timeline</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        /* LARGE EVENT HERO */
+        .event-hero {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            padding: 60px 40px;
+            position: relative;
+        }
+
+        .event-badge-large {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 10px 25px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .event-hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+        }
+
+        .event-hero h1 {
+            font-size: 56px;
+            color: #D4AF37;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .event-hero-meta {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #F5F5DC;
+        }
+
+        .event-hero-meta strong {
+            color: #D4AF37;
+        }
+
+        .event-hero p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .event-hero-cta {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .btn-large-primary {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 18px 45px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-large-secondary {
+            background: transparent;
+            color: #D4AF37;
+            padding: 18px 45px;
+            border: 3px solid #D4AF37;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* EVENT COUNTDOWN */
+        .countdown {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .countdown-item {
+            background: rgba(212,175,55,0.2);
+            border: 2px solid #D4AF37;
+            padding: 15px 20px;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .countdown-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #D4AF37;
+        }
+
+        .countdown-label {
+            font-size: 12px;
+            color: #F5F5DC;
+            margin-top: 5px;
+        }
+
+        /* EVENT TIMELINE */
+        .timeline-section {
+            padding: 50px 40px;
+            background: #F5F5DC;
+        }
+
+        .timeline-section h2 {
+            text-align: center;
+            color: #2D5016;
+            font-size: 36px;
+            margin-bottom: 40px;
+        }
+
+        .timeline {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: #D4AF37;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item.left {
+            flex-direction: row;
+        }
+
+        .timeline-item.right {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: white;
+            padding: 25px;
+            border: 3px solid #2D5016;
+            position: relative;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: #1E3A8A;
+            border: 4px solid #D4AF37;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        .timeline-date {
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 8px 15px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .timeline-title {
+            color: #2D5016;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .timeline-desc {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* CONTENT WITH SIDEBAR */
+        .content-magazine {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 50px 40px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-block {
+            background: white;
+            border: 3px solid #2D5016;
+            padding: 35px;
+        }
+
+        .content-block h2 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .content-block p {
+            line-height: 1.7;
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        .sidebar-column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .sidebar-widget {
+            background: #1E3A8A;
+            color: white;
+            padding: 25px;
+        }
+
+        .sidebar-widget h3 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        .widget-alt {
+            background: #F5F5DC;
+            border: 3px solid #D4AF37;
+        }
+
+        .widget-alt h3 { color: #2D5016; border-bottom-color: #2D5016; }
+        .widget-alt { color: #333; }
+
+        .event-list {
+            list-style: none;
+        }
+
+        .event-list-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(245,245,220,0.2);
+        }
+
+        .event-list-item:last-child { border-bottom: none; }
+
+        .event-list-date {
+            color: #D4AF37;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .event-list-title {
+            font-size: 15px;
+        }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 320px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .annotation h4 {
+            color: #D4AF37;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .annotation ul {
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+
+        .annotation li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">MAGAZINE V7: Event Hero + Timeline</div>
+
+    <div class="annotation">
+        <h4>🎯 Featured Elements:</h4>
+        <ul>
+            <li><strong>Large Event Hero</strong> - Next major event featured</li>
+            <li><strong>Countdown Timer</strong> - Days/Hours to event</li>
+            <li><strong>Event Timeline</strong> - Visual calendar of events</li>
+            <li><strong>Practice Schedule</strong> - Sidebar widget</li>
+            <li><strong>Other Events</strong> - Quick list in sidebar</li>
+        </ul>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212,175,55,0.3);">
+            <strong>Best For:</strong><br>
+            Event-driven sites that want next big event front and center
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="event-hero">
+            <div class="event-hero-content">
+                <div class="event-badge-large">⚔️ UPCOMING EVENT</div>
+                <h1>Spring Coronation Tournament</h1>
+                <div class="event-hero-meta">
+                    <strong>📅 April 12, 2025</strong> | 9:00 AM - 8:00 PM<br>
+                    <strong>📍 Veterans Memorial Park</strong>, Louisville, KY
+                </div>
+                <p>Watch as the finest fighters in Meridies compete for the Crown! Featuring heavy armored combat tournaments, rapier competitions, arts & sciences displays, merchant row, classes, and a grand royal feast in the evening.</p>
+                <div class="event-hero-cta">
+                    <button class="btn-large-primary">Pre-Register ($35)</button>
+                    <button class="btn-large-secondary">Event Details</button>
+                </div>
+
+                <div class="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-number">147</div>
+                        <div class="countdown-label">DAYS</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number">18</div>
+                        <div class="countdown-label">HOURS</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number">32</div>
+                        <div class="countdown-label">MINS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-section">
+            <h2>📅 Upcoming Events Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Nov 22, 2025</div>
+                        <div class="timeline-title">Autumn Feast & Tournament</div>
+                        <div class="timeline-desc">Period feast with five courses, armored combat, and entertainment. Pre-registration closes Nov 18.</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Dec 14, 2025</div>
+                        <div class="timeline-title">Yule Celebration</div>
+                        <div class="timeline-desc">Traditional Yuletide gathering with gift exchange, wassail, and caroling. Family-friendly event.</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Jan 18, 2026</div>
+                        <div class="timeline-title">Twelfth Night Revelry</div>
+                        <div class="timeline-desc">Arts & sciences competitions, bardic performances, and the unveiling of award recipients.</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Feb 22, 2026</div>
+                        <div class="timeline-title">Baronial Birthday</div>
+                        <div class="timeline-desc">Celebrating 35 years! Tournament, feast, and special performances honoring our history.</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Apr 12, 2026</div>
+                        <div class="timeline-title">Spring Coronation</div>
+                        <div class="timeline-desc">Crown Tournament to determine our next King and Queen. Kingdom-wide event.</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-magazine">
+            <div class="main-content">
+                <div class="content-block">
+                    <h2>Welcome to Glyn Dwfn</h2>
+                    <p>The Barony of Glyn Dwfn is part of the Society for Creative Anachronism (SCA), a non-profit educational organization dedicated to researching and recreating the arts, skills, and traditions of pre-17th century Europe.</p>
+                    <p>Throughout the year, we host major events that bring together members from across the Kingdom of Meridies. From intimate local gatherings to kingdom-level tournaments, there's always something happening!</p>
+                </div>
+            </div>
+
+            <div class="sidebar-column">
+                <div class="sidebar-widget widget-alt">
+                    <h3>⚔️ Weekly Practices</h3>
+                    <ul class="event-list">
+                        <li class="event-list-item">
+                            <div class="event-list-date">Every Thursday</div>
+                            <div class="event-list-title">Fighter Practice • 6-9 PM</div>
+                        </li>
+                        <li class="event-list-item">
+                            <div class="event-list-date">2nd Tuesday</div>
+                            <div class="event-list-title">Arts Night • 7-10 PM</div>
+                        </li>
+                        <li class="event-list-item">
+                            <div class="event-list-date">2nd Sunday</div>
+                            <div class="event-list-title">Archery • 1-4 PM</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3>📌 Other Events</h3>
+                    <ul class="event-list">
+                        <li class="event-list-item">
+                            <div class="event-list-date">Nov 27</div>
+                            <div class="event-list-title">Calligraphy Workshop</div>
+                        </li>
+                        <li class="event-list-item">
+                            <div class="event-list-date">Dec 5</div>
+                            <div class="event-list-title">Brewing Class</div>
+                        </li>
+                        <li class="event-list-item">
+                            <div class="event-list-date">Dec 8</div>
+                            <div class="event-list-title">Armor Maintenance</div>
+                        </li>
+                    </ul>
+                    <button style="width: 100%; background: #D4AF37; color: #2D5016; padding: 10px; border: none; font-weight: bold; cursor: pointer; margin-top: 15px;">View All Events →</button>
+                </div>
+
+                <div class="sidebar-widget widget-alt">
+                    <h3>🔔 Get Notified</h3>
+                    <p style="font-size: 14px; margin-bottom: 15px; line-height: 1.5;">Never miss an event! Subscribe to our calendar or newsletter.</p>
+                    <button style="width: 100%; background: #1E3A8A; color: #D4AF37; padding: 10px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px;">Subscribe to Calendar</button>
+                    <button style="width: 100%; background: transparent; color: #1E3A8A; padding: 10px; border: 2px solid #1E3A8A; font-weight: bold; cursor: pointer;">Join Newsletter</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard V9: Calendar Focus</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        /* COMPACT HERO */
+        .hero-simple {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            padding: 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-simple h1 {
+            font-size: 38px;
+            color: #D4AF37;
+            margin-bottom: 12px;
+        }
+
+        .hero-simple p {
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* DASHBOARD GRID - CALENDAR DOMINANT */
+        .dashboard {
+            padding: 30px;
+            background: #f5f5f5;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 3px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        /* LARGE CALENDAR CARD */
+        .calendar-card {
+            grid-column: span 7;
+            grid-row: span 2;
+            border: 4px solid #D4AF37;
+        }
+
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 15px 20px;
+            margin: -25px -25px 20px -25px;
+        }
+
+        .cal-month {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .cal-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cal-nav-btn {
+            background: #D4AF37;
+            color: #2D5016;
+            width: 35px;
+            height: 35px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .cal-day-name {
+            text-align: center;
+            font-weight: bold;
+            color: #2D5016;
+            padding: 10px 0;
+            font-size: 13px;
+        }
+
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #F5F5DC;
+            border: 2px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .cal-day:hover {
+            border-color: #D4AF37;
+            transform: scale(1.05);
+        }
+
+        .cal-day.today {
+            background: #1E3A8A;
+            color: white;
+            font-weight: bold;
+        }
+
+        .cal-day.has-event {
+            background: #D4AF37;
+            color: #2D5016;
+            font-weight: bold;
+        }
+
+        .cal-day.has-event::after {
+            content: '•••';
+            position: absolute;
+            bottom: 5px;
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        .cal-day.other-month {
+            opacity: 0.3;
+        }
+
+        .cal-day-number {
+            font-size: 16px;
+        }
+
+        /* NEXT EVENT CARD */
+        .next-event-card {
+            grid-column: span 5;
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            color: white;
+            border: none;
+        }
+
+        .next-event-card h3 {
+            color: #D4AF37;
+            border-bottom-color: #D4AF37;
+        }
+
+        .event-badge {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 6px 15px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .event-name {
+            font-size: 24px;
+            color: #D4AF37;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .event-when {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #F5F5DC;
+        }
+
+        .event-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .event-btn {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 12px 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* PRACTICES CARD */
+        .practices-card {
+            grid-column: span 5;
+            background: #F5F5DC;
+            border: 3px solid #2D5016;
+        }
+
+        .practice-item {
+            padding: 12px 0;
+            border-bottom: 2px solid #D4AF37;
+        }
+
+        .practice-item:last-child {
+            border-bottom: none;
+        }
+
+        .practice-day {
+            color: #1E3A8A;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .practice-title {
+            color: #2D5016;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .practice-time {
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* QUICK EVENTS LIST */
+        .events-list-card {
+            grid-column: span 4;
+            border: 3px solid #1E3A8A;
+        }
+
+        .event-list-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .event-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-date-small {
+            color: #1E3A8A;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .event-title-small {
+            color: #2D5016;
+            font-size: 14px;
+        }
+
+        /* NEWS CARD */
+        .news-card {
+            grid-column: span 4;
+            border: 3px solid #D4AF37;
+        }
+
+        .news-item-small {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .news-item-small:last-child {
+            border-bottom: none;
+        }
+
+        .news-date-small {
+            color: #1E3A8A;
+            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .news-title-small {
+            color: #2D5016;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* QUICK ACTIONS */
+        .actions-card {
+            grid-column: span 4;
+            background: #1E3A8A;
+            color: white;
+            border: none;
+        }
+
+        .actions-card h3 {
+            color: #D4AF37;
+            border-bottom-color: #D4AF37;
+        }
+
+        .action-btn {
+            width: 100%;
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 12px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .action-btn:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 320px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .annotation h4 {
+            color: #D4AF37;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .annotation ul {
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+
+        .annotation li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">DASHBOARD V9: Large Calendar Focus</div>
+
+    <div class="annotation">
+        <h4>🎯 Key Features:</h4>
+        <ul>
+            <li><strong>Large Calendar</strong> - Interactive, takes up most space</li>
+            <li><strong>Event indicators</strong> - Click days to see details</li>
+            <li><strong>Next event</strong> - Featured prominently</li>
+            <li><strong>Practice schedule</strong> - Always visible</li>
+            <li><strong>Supporting cards</strong> - News, events, actions</li>
+        </ul>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212,175,55,0.3);">
+            <strong>Calendar is the STAR</strong> - Everything else supports it
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-simple">
+            <h1>Welcome to Glyn Dwfn</h1>
+            <p>Kentucky's premier SCA barony - Check the calendar for upcoming events!</p>
+        </div>
+
+        <div class="dashboard">
+            <!-- LARGE CALENDAR CARD -->
+            <div class="card calendar-card">
+                <div class="cal-header">
+                    <div class="cal-month">November 2025</div>
+                    <div class="cal-nav">
+                        <button class="cal-nav-btn">←</button>
+                        <button class="cal-nav-btn">→</button>
+                    </div>
+                </div>
+
+                <div class="cal-grid">
+                    <div class="cal-day-name">Sunday</div>
+                    <div class="cal-day-name">Monday</div>
+                    <div class="cal-day-name">Tuesday</div>
+                    <div class="cal-day-name">Wednesday</div>
+                    <div class="cal-day-name">Thursday</div>
+                    <div class="cal-day-name">Friday</div>
+                    <div class="cal-day-name">Saturday</div>
+
+                    <div class="cal-day other-month"><span class="cal-day-number">26</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">27</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">28</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">29</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">30</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">31</span></div>
+                    <div class="cal-day"><span class="cal-day-number">1</span></div>
+
+                    <div class="cal-day"><span class="cal-day-number">2</span></div>
+                    <div class="cal-day"><span class="cal-day-number">3</span></div>
+                    <div class="cal-day"><span class="cal-day-number">4</span></div>
+                    <div class="cal-day"><span class="cal-day-number">5</span></div>
+                    <div class="cal-day has-event"><span class="cal-day-number">6</span></div>
+                    <div class="cal-day"><span class="cal-day-number">7</span></div>
+                    <div class="cal-day"><span class="cal-day-number">8</span></div>
+
+                    <div class="cal-day"><span class="cal-day-number">9</span></div>
+                    <div class="cal-day"><span class="cal-day-number">10</span></div>
+                    <div class="cal-day has-event"><span class="cal-day-number">11</span></div>
+                    <div class="cal-day"><span class="cal-day-number">12</span></div>
+                    <div class="cal-day has-event"><span class="cal-day-number">13</span></div>
+                    <div class="cal-day"><span class="cal-day-number">14</span></div>
+                    <div class="cal-day today has-event"><span class="cal-day-number">15</span></div>
+
+                    <div class="cal-day"><span class="cal-day-number">16</span></div>
+                    <div class="cal-day"><span class="cal-day-number">17</span></div>
+                    <div class="cal-day"><span class="cal-day-number">18</span></div>
+                    <div class="cal-day"><span class="cal-day-number">19</span></div>
+                    <div class="cal-day has-event"><span class="cal-day-number">20</span></div>
+                    <div class="cal-day"><span class="cal-day-number">21</span></div>
+                    <div class="cal-day has-event"><span class="cal-day-number">22</span></div>
+
+                    <div class="cal-day"><span class="cal-day-number">23</span></div>
+                    <div class="cal-day"><span class="cal-day-number">24</span></div>
+                    <div class="cal-day"><span class="cal-day-number">25</span></div>
+                    <div class="cal-day"><span class="cal-day-number">26</span></div>
+                    <div class="cal-day has-event"><span class="cal-day-number">27</span></div>
+                    <div class="cal-day"><span class="cal-day-number">28</span></div>
+                    <div class="cal-day"><span class="cal-day-number">29</span></div>
+
+                    <div class="cal-day"><span class="cal-day-number">30</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">1</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">2</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">3</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">4</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">5</span></div>
+                    <div class="cal-day other-month"><span class="cal-day-number">6</span></div>
+                </div>
+            </div>
+
+            <!-- NEXT EVENT FEATURED -->
+            <div class="card next-event-card">
+                <div class="event-badge">⚔️ NEXT EVENT</div>
+                <div class="event-name">Autumn Feast & Tournament</div>
+                <div class="event-when">📅 Saturday, Nov 22 • 2:00 PM - 10:00 PM</div>
+                <div class="event-desc">Period feast with five courses, armored combat tournaments, and entertainment. Pre-register by Nov 18.</div>
+                <button class="event-btn">Register Now ($30)</button>
+            </div>
+
+            <!-- PRACTICES -->
+            <div class="card practices-card">
+                <h3>⚔️ Weekly Practices</h3>
+                <div class="practice-item">
+                    <div class="practice-day">Every Thursday</div>
+                    <div class="practice-title">Fighter Practice</div>
+                    <div class="practice-time">6:00 PM - 9:00 PM • Veteran's Park</div>
+                </div>
+                <div class="practice-item">
+                    <div class="practice-day">2nd Tuesday</div>
+                    <div class="practice-title">Arts & Sciences Night</div>
+                    <div class="practice-time">7:00 PM - 10:00 PM • Community Center</div>
+                </div>
+                <div class="practice-item">
+                    <div class="practice-day">2nd Sunday</div>
+                    <div class="practice-title">Archery</div>
+                    <div class="practice-time">1:00 PM - 4:00 PM • Cedar Ridge</div>
+                </div>
+            </div>
+
+            <!-- OTHER EVENTS -->
+            <div class="card events-list-card">
+                <h3>📌 Other Events</h3>
+                <div class="event-list-item">
+                    <div class="event-date-small">Nov 27</div>
+                    <div class="event-title-small">Calligraphy Workshop</div>
+                </div>
+                <div class="event-list-item">
+                    <div class="event-date-small">Dec 5</div>
+                    <div class="event-title-small">Brewing Class</div>
+                </div>
+                <div class="event-list-item">
+                    <div class="event-date-small">Dec 14</div>
+                    <div class="event-title-small">Yule Celebration</div>
+                </div>
+                <div class="event-list-item">
+                    <div class="event-date-small">Jan 18</div>
+                    <div class="event-title-small">Twelfth Night</div>
+                </div>
+            </div>
+
+            <!-- NEWS -->
+            <div class="card news-card">
+                <h3>📰 Latest News</h3>
+                <div class="news-item-small">
+                    <div class="news-date-small">Nov 14</div>
+                    <div class="news-title-small">Feast Menu Posted</div>
+                </div>
+                <div class="news-item-small">
+                    <div class="news-date-small">Nov 12</div>
+                    <div class="news-title-small">Fighter Auths Sunday</div>
+                </div>
+                <div class="news-item-small">
+                    <div class="news-date-small">Nov 8</div>
+                    <div class="news-title-small">December Workshops</div>
+                </div>
+                <div class="news-item-small">
+                    <div class="news-date-small">Nov 5</div>
+                    <div class="news-title-small">New Members Welcome</div>
+                </div>
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="card actions-card">
+                <h3>⚡ Quick Links</h3>
+                <button class="action-btn">Join Newsletter</button>
+                <button class="action-btn">Photo Gallery</button>
+                <button class="action-btn">Officers</button>
+                <button class="action-btn">New Members</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

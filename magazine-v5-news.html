@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine V5: News Feed</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        .hero-magazine {
+            display: grid;
+            grid-template-columns: 60% 40%;
+            min-height: 550px;
+        }
+
+        .hero-featured {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+
+        .hero-featured h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #D4AF37;
+            line-height: 1.2;
+        }
+
+        .hero-featured p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-cta {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 15px 35px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+
+        /* PRACTICE SCHEDULE IN HERO */
+        .hero-schedule {
+            background: #F5F5DC;
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .hero-schedule h3 {
+            color: #2D5016;
+            font-size: 20px;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        .practice-item {
+            background: white;
+            border-left: 5px solid #1E3A8A;
+            padding: 15px;
+        }
+
+        .practice-day {
+            color: #1E3A8A;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .practice-title {
+            color: #2D5016;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .practice-details {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .content-magazine {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 50px 40px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-block {
+            background: white;
+            border: 3px solid #2D5016;
+            padding: 35px;
+        }
+
+        .content-block.featured {
+            background: #F5F5DC;
+            border-left: 8px solid #D4AF37;
+        }
+
+        .content-block h2 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .content-block p {
+            line-height: 1.7;
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        /* NEWS FEED */
+        .news-feed {
+            background: white;
+            border: 3px solid #1E3A8A;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .news-header {
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 20px 30px;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .news-item {
+            padding: 25px 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .news-date {
+            color: #1E3A8A;
+            font-weight: bold;
+        }
+
+        .news-category {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 2px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .news-title {
+            color: #2D5016;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .news-excerpt {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .read-more {
+            color: #1E3A8A;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .sidebar-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-widget {
+            background: #1E3A8A;
+            color: white;
+            padding: 25px;
+        }
+
+        .sidebar-widget h3 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        .widget-alt {
+            background: #F5F5DC;
+            border: 3px solid #D4AF37;
+        }
+
+        .widget-alt h3 { color: #2D5016; border-bottom-color: #2D5016; }
+        .widget-alt { color: #333; }
+
+        /* SOCIAL FEED WIDGET */
+        .social-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .social-post {
+            background: rgba(212,175,55,0.1);
+            padding: 15px;
+            border-left: 3px solid #D4AF37;
+        }
+
+        .social-header {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .social-icon {
+            font-size: 20px;
+        }
+
+        .social-source {
+            font-size: 13px;
+            color: #2D5016;
+            font-weight: bold;
+        }
+
+        .social-content {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .social-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 320px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .annotation h4 {
+            color: #D4AF37;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .annotation ul {
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+
+        .annotation li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">MAGAZINE VARIANT 5: News Feed + Practice Schedule</div>
+
+    <div class="annotation">
+        <h4>🎯 Featured Elements:</h4>
+        <ul>
+            <li><strong>News Feed</strong> - Latest barony announcements</li>
+            <li><strong>Practice Schedule</strong> - Weekly recurring activities</li>
+            <li><strong>Social Media</strong> - Live Facebook/Discord feed</li>
+            <li><strong>Categories</strong> - Filter news by type</li>
+            <li><strong>RSS Ready</strong> - Subscribable feed</li>
+        </ul>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212,175,55,0.3);">
+            <strong>WordPress Integration:</strong><br>
+            • Blog posts as news items<br>
+            • Category filtering<br>
+            • Social media aggregator<br>
+            • RSS feed generation
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-magazine">
+            <div class="hero-featured">
+                <h1>Stay Connected with Glyn Dwfn</h1>
+                <p>From weekly practices to major kingdom events, stay up-to-date with everything happening in your barony. Join our vibrant community today!</p>
+                <button class="hero-cta">Subscribe to Updates</button>
+            </div>
+
+            <div class="hero-schedule">
+                <h3>📅 Weekly Practice Schedule</h3>
+                <div class="practice-item">
+                    <div class="practice-day">Every Thursday</div>
+                    <div class="practice-title">⚔️ Fighter Practice</div>
+                    <div class="practice-details">6:00 PM - 9:00 PM<br>Veteran's Memorial Park<br>All combat disciplines</div>
+                </div>
+                <div class="practice-item">
+                    <div class="practice-day">2nd Tuesday</div>
+                    <div class="practice-title">🎨 Arts & Sciences Night</div>
+                    <div class="practice-details">7:00 PM - 10:00 PM<br>Community Center<br>All crafts welcome</div>
+                </div>
+                <div class="practice-item">
+                    <div class="practice-day">2nd & 4th Sunday</div>
+                    <div class="practice-title">🏹 Archery Practice</div>
+                    <div class="practice-details">1:00 PM - 4:00 PM<br>Cedar Ridge Range<br>Target & combat archery</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-magazine">
+            <div class="main-content">
+                <div class="content-block featured">
+                    <h2>Welcome to Glyn Dwfn</h2>
+                    <p>The Barony of Glyn Dwfn is part of the Society for Creative Anachronism (SCA), a non-profit educational organization dedicated to researching and recreating the arts, skills, and traditions of pre-17th century Europe.</p>
+                    <p>Stay informed about barony news, events, and activities by checking our news feed below or subscribing to our newsletter.</p>
+                </div>
+
+                <div class="news-feed">
+                    <div class="news-header">
+                        📰 Latest News
+                        <button style="background: #D4AF37; color: #2D5016; padding: 8px 20px; border: none; font-size: 14px; font-weight: bold; cursor: pointer;">Subscribe via RSS</button>
+                    </div>
+
+                    <div class="news-item">
+                        <div class="news-meta">
+                            <span class="news-date">Nov 14, 2025</span>
+                            <span class="news-category">EVENT</span>
+                        </div>
+                        <div class="news-title">Spring Coronation Pre-Registration Now Open</div>
+                        <div class="news-excerpt">
+                            Get your tickets early for the biggest event of the season! Pre-registration for Spring Coronation is now open. Early bird pricing available through December 15th.
+                        </div>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+
+                    <div class="news-item">
+                        <div class="news-meta">
+                            <span class="news-date">Nov 10, 2025</span>
+                            <span class="news-category">A&S</span>
+                        </div>
+                        <div class="news-title">Calligraphy Workshop Series Announced</div>
+                        <div class="news-excerpt">
+                            Master Scribe Isabella will be teaching a 6-week calligraphy series starting in January. Learn Gothic, Uncial, and Italic hands. All materials provided.
+                        </div>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+
+                    <div class="news-item">
+                        <div class="news-meta">
+                            <span class="news-date">Nov 5, 2025</span>
+                            <span class="news-category">COMBAT</span>
+                        </div>
+                        <div class="news-title">New Fighter Authorization Schedule Released</div>
+                        <div class="news-excerpt">
+                            Interested in getting authorized in armored combat or rapier? Check out our updated authorization schedule with monthly opportunities to get on the field.
+                        </div>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+
+                    <div class="news-item">
+                        <div class="news-meta">
+                            <span class="news-date">Nov 1, 2025</span>
+                            <span class="news-category">GENERAL</span>
+                        </div>
+                        <div class="news-title">Welcome New Members from October!</div>
+                        <div class="news-excerpt">
+                            We're excited to welcome 12 new members who joined us in October! Find out who they are and what activities they're interested in exploring.
+                        </div>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-column">
+                <div class="sidebar-widget widget-alt">
+                    <h3>📱 Social Media</h3>
+                    <div class="social-feed">
+                        <div class="social-post">
+                            <div class="social-header">
+                                <span class="social-icon">📘</span>
+                                <span class="social-source">Facebook</span>
+                            </div>
+                            <div class="social-content">
+                                Great turnout at fighter practice tonight! 23 fighters showed up. See you next Thursday!
+                            </div>
+                            <div class="social-time">2 hours ago</div>
+                        </div>
+
+                        <div class="social-post">
+                            <div class="social-header">
+                                <span class="social-icon">💬</span>
+                                <span class="social-source">Discord</span>
+                            </div>
+                            <div class="social-content">
+                                Arts night reminder: Bring your projects tomorrow! Lady Margaret is teaching tablet weaving.
+                            </div>
+                            <div class="social-time">5 hours ago</div>
+                        </div>
+
+                        <div class="social-post">
+                            <div class="social-header">
+                                <span class="social-icon">📘</span>
+                                <span class="social-source">Facebook</span>
+                            </div>
+                            <div class="social-content">
+                                Photos from Autumn Feast are now live in the gallery! 127 new photos added.
+                            </div>
+                            <div class="social-time">1 day ago</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3>🔔 Get Notified</h3>
+                    <p style="margin-bottom: 15px;">Never miss barony news! Subscribe to our weekly newsletter for updates on practices, events, and community happenings.</p>
+                    <input type="email" placeholder="Your email" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid #D4AF37;">
+                    <button style="width: 100%; background: #D4AF37; color: #2D5016; padding: 12px; border: none; font-weight: bold; cursor: pointer;">Subscribe</button>
+                </div>
+
+                <div class="sidebar-widget widget-alt">
+                    <h3>News Categories</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #ddd;">⚔️ Combat Sports (24)</li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #ddd;">🎨 Arts & Sciences (18)</li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #ddd;">📅 Events (31)</li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #ddd;">👥 Community (15)</li>
+                        <li style="padding: 10px 0;">📜 General (22)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

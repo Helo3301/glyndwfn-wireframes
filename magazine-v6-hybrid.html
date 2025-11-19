@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine V6: Calendar + News Hybrid</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        /* COMPACT HERO WITH EVENT HIGHLIGHT */
+        .hero-compact {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            padding: 50px 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-compact h1 {
+            font-size: 42px;
+            color: #D4AF37;
+            margin-bottom: 15px;
+        }
+
+        .hero-compact p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .cta-primary {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 15px 35px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: #D4AF37;
+            padding: 15px 35px;
+            border: 2px solid #D4AF37;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* DUAL SIDEBAR LAYOUT */
+        .content-dual {
+            display: grid;
+            grid-template-columns: 350px 1fr 350px;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        /* LEFT SIDEBAR - CALENDAR */
+        .sidebar-left {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .calendar-widget {
+            background: white;
+            border: 3px solid #D4AF37;
+            overflow: hidden;
+        }
+
+        .calendar-header {
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .calendar-month {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #ddd;
+            border-top: 1px solid #ddd;
+        }
+
+        .calendar-day-header {
+            background: #F5F5DC;
+            padding: 8px 3px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: #2D5016;
+        }
+
+        .calendar-day {
+            background: white;
+            padding: 8px;
+            min-height: 45px;
+            text-align: center;
+            font-size: 13px;
+            position: relative;
+        }
+
+        .calendar-day.has-event {
+            background: #F5F5DC;
+            font-weight: bold;
+        }
+
+        .calendar-day.has-event::after {
+            content: "•";
+            color: #D4AF37;
+            font-size: 20px;
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .calendar-day.other-month {
+            color: #ccc;
+            background: #fafafa;
+        }
+
+        .upcoming-mini {
+            background: #F5F5DC;
+            padding: 15px;
+        }
+
+        .upcoming-mini h4 {
+            color: #2D5016;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .mini-event {
+            padding: 8px 0;
+            border-bottom: 1px solid #D4AF37;
+            font-size: 13px;
+        }
+
+        .mini-event:last-child { border-bottom: none; }
+
+        .mini-date {
+            color: #1E3A8A;
+            font-weight: bold;
+        }
+
+        /* PRACTICE TIMES WIDGET */
+        .practice-widget {
+            background: #1E3A8A;
+            color: white;
+            padding: 20px;
+        }
+
+        .practice-widget h3 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 8px;
+        }
+
+        .practice-item-mini {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(245,245,220,0.2);
+            font-size: 13px;
+        }
+
+        .practice-item-mini:last-child { border-bottom: none; }
+
+        .practice-day-mini {
+            color: #D4AF37;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        /* MAIN CONTENT - NEWS AND EVENTS */
+        .main-center {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .featured-event {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            color: white;
+            padding: 30px;
+            border: 4px solid #D4AF37;
+        }
+
+        .event-label {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 5px 15px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .featured-event h2 {
+            color: #D4AF37;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .event-meta {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #F5F5DC;
+        }
+
+        .event-meta strong {
+            color: #D4AF37;
+        }
+
+        .featured-event p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .event-cta {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 12px 30px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .news-compact {
+            background: white;
+            border: 3px solid #2D5016;
+            padding: 25px;
+        }
+
+        .news-compact h2 {
+            color: #2D5016;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .news-item-compact {
+            padding: 15px 0;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .news-item-compact:last-child { border-bottom: none; }
+
+        .news-header-compact {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .news-date-compact {
+            color: #1E3A8A;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .news-tag {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .news-title-compact {
+            color: #2D5016;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .news-excerpt-compact {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* RIGHT SIDEBAR - QUICK INFO */
+        .sidebar-right {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .info-widget {
+            background: #F5F5DC;
+            border: 3px solid #D4AF37;
+            padding: 20px;
+        }
+
+        .info-widget h3 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 8px;
+        }
+
+        .social-widget {
+            background: #1E3A8A;
+            color: white;
+            padding: 20px;
+        }
+
+        .social-widget h3 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 8px;
+        }
+
+        .social-mini {
+            background: rgba(212,175,55,0.1);
+            padding: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .social-mini:last-child { margin-bottom: 0; }
+
+        .social-source {
+            color: #D4AF37;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 320px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .annotation h4 {
+            color: #D4AF37;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .annotation ul {
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+
+        .annotation li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">MAGAZINE V6: Calendar + News Hybrid (Dual Sidebar)</div>
+
+    <div class="annotation">
+        <h4>🎯 Featured Elements:</h4>
+        <ul>
+            <li><strong>Dual Sidebars</strong> - Calendar left, Info right</li>
+            <li><strong>Featured Event</strong> - Big hero event in center</li>
+            <li><strong>News Feed</strong> - Latest updates in center</li>
+            <li><strong>Practice Schedule</strong> - Left sidebar</li>
+            <li><strong>Social Feed</strong> - Right sidebar</li>
+        </ul>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212,175,55,0.3);">
+            <strong>Best For:</strong><br>
+            Maximum information density while keeping events prominent
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-compact">
+            <h1>Welcome to Glyn Dwfn</h1>
+            <p>Kentucky's premier SCA barony for medieval combat, arts, and fellowship</p>
+            <div class="hero-cta-group">
+                <button class="cta-primary">View All Events</button>
+                <button class="cta-secondary">Join Us</button>
+            </div>
+        </div>
+
+        <div class="content-dual">
+            <!-- LEFT SIDEBAR: CALENDAR -->
+            <div class="sidebar-left">
+                <div class="calendar-widget">
+                    <div class="calendar-header">📅 Events</div>
+                    <div class="calendar-month">November 2025</div>
+                    <div class="calendar-grid">
+                        <div class="calendar-day-header">S</div>
+                        <div class="calendar-day-header">M</div>
+                        <div class="calendar-day-header">T</div>
+                        <div class="calendar-day-header">W</div>
+                        <div class="calendar-day-header">T</div>
+                        <div class="calendar-day-header">F</div>
+                        <div class="calendar-day-header">S</div>
+
+                        <div class="calendar-day other-month">26</div>
+                        <div class="calendar-day other-month">27</div>
+                        <div class="calendar-day other-month">28</div>
+                        <div class="calendar-day other-month">29</div>
+                        <div class="calendar-day other-month">30</div>
+                        <div class="calendar-day other-month">31</div>
+                        <div class="calendar-day">1</div>
+
+                        <div class="calendar-day">2</div>
+                        <div class="calendar-day">3</div>
+                        <div class="calendar-day">4</div>
+                        <div class="calendar-day">5</div>
+                        <div class="calendar-day has-event">6</div>
+                        <div class="calendar-day">7</div>
+                        <div class="calendar-day">8</div>
+
+                        <div class="calendar-day">9</div>
+                        <div class="calendar-day">10</div>
+                        <div class="calendar-day has-event">11</div>
+                        <div class="calendar-day">12</div>
+                        <div class="calendar-day has-event">13</div>
+                        <div class="calendar-day">14</div>
+                        <div class="calendar-day has-event">15</div>
+
+                        <div class="calendar-day">16</div>
+                        <div class="calendar-day">17</div>
+                        <div class="calendar-day">18</div>
+                        <div class="calendar-day">19</div>
+                        <div class="calendar-day has-event">20</div>
+                        <div class="calendar-day">21</div>
+                        <div class="calendar-day has-event">22</div>
+
+                        <div class="calendar-day">23</div>
+                        <div class="calendar-day">24</div>
+                        <div class="calendar-day">25</div>
+                        <div class="calendar-day">26</div>
+                        <div class="calendar-day has-event">27</div>
+                        <div class="calendar-day">28</div>
+                        <div class="calendar-day">29</div>
+
+                        <div class="calendar-day">30</div>
+                        <div class="calendar-day other-month">1</div>
+                        <div class="calendar-day other-month">2</div>
+                        <div class="calendar-day other-month">3</div>
+                        <div class="calendar-day other-month">4</div>
+                        <div class="calendar-day other-month">5</div>
+                        <div class="calendar-day other-month">6</div>
+                    </div>
+
+                    <div class="upcoming-mini">
+                        <h4>Coming Up</h4>
+                        <div class="mini-event">
+                            <div class="mini-date">Thu, Nov 20</div>
+                            Fighter Practice
+                        </div>
+                        <div class="mini-event">
+                            <div class="mini-date">Sat, Nov 22</div>
+                            Autumn Feast
+                        </div>
+                        <div class="mini-event">
+                            <div class="mini-date">Thu, Nov 27</div>
+                            Arts Night
+                        </div>
+                    </div>
+                </div>
+
+                <div class="practice-widget">
+                    <h3>⚔️ Weekly Practices</h3>
+                    <div class="practice-item-mini">
+                        <div class="practice-day-mini">Thursday</div>
+                        Fighter Practice<br>6-9 PM
+                    </div>
+                    <div class="practice-item-mini">
+                        <div class="practice-day-mini">2nd Tuesday</div>
+                        Arts & Sciences<br>7-10 PM
+                    </div>
+                    <div class="practice-item-mini">
+                        <div class="practice-day-mini">2nd Sunday</div>
+                        Archery<br>1-4 PM
+                    </div>
+                </div>
+            </div>
+
+            <!-- CENTER CONTENT: FEATURED EVENT + NEWS -->
+            <div class="main-center">
+                <div class="featured-event">
+                    <div class="event-label">⚔️ NEXT BIG EVENT</div>
+                    <h2>Autumn Feast & Tournament</h2>
+                    <div class="event-meta">
+                        <strong>📅 Saturday, November 22, 2025</strong> | 2:00 PM - 10:00 PM<br>
+                        <strong>📍 Grand Hall</strong>, Louisville, KY
+                    </div>
+                    <p>Join us for a period feast with five courses, live entertainment, armored combat tournaments, arts & sciences displays, and dancing. Pre-registration required by November 18th.</p>
+                    <button class="event-cta">Register Now ($30)</button>
+                </div>
+
+                <div class="news-compact">
+                    <h2>📰 Latest News</h2>
+
+                    <div class="news-item-compact">
+                        <div class="news-header-compact">
+                            <span class="news-date-compact">Nov 14</span>
+                            <span class="news-tag">EVENT</span>
+                        </div>
+                        <div class="news-title-compact">Autumn Feast Menu Announced</div>
+                        <div class="news-excerpt-compact">Chef Isabella has finalized the five-course medieval feast menu. Dietary accommodations available.</div>
+                    </div>
+
+                    <div class="news-item-compact">
+                        <div class="news-header-compact">
+                            <span class="news-date-compact">Nov 12</span>
+                            <span class="news-tag">COMBAT</span>
+                        </div>
+                        <div class="news-title-compact">Fighter Authorizations This Sunday</div>
+                        <div class="news-excerpt-compact">Getting authorized in armored combat or rapier? Marshals will be available for authorizations on Sunday.</div>
+                    </div>
+
+                    <div class="news-item-compact">
+                        <div class="news-header-compact">
+                            <span class="news-date-compact">Nov 8</span>
+                            <span class="news-tag">A&S</span>
+                        </div>
+                        <div class="news-title-compact">December Workshop Schedule Posted</div>
+                        <div class="news-excerpt-compact">Calligraphy, brewing, and leatherwork workshops planned for December. Sign up now!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR: QUICK INFO -->
+            <div class="sidebar-right">
+                <div class="info-widget">
+                    <h3>🎯 Quick Start</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #D4AF37;">New Member Guide</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #D4AF37;">Practice Locations</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #D4AF37;">Contact Officers</li>
+                        <li style="padding: 8px 0;">Photo Gallery</li>
+                    </ul>
+                </div>
+
+                <div class="social-widget">
+                    <h3>📱 Recent Updates</h3>
+                    <div class="social-mini">
+                        <div class="social-source">Facebook • 3h ago</div>
+                        Great turnout at practice tonight! 23 fighters on the field.
+                    </div>
+                    <div class="social-mini">
+                        <div class="social-source">Discord • 5h ago</div>
+                        Arts night tomorrow! Bring your projects.
+                    </div>
+                    <div class="social-mini">
+                        <div class="social-source">Facebook • 1d ago</div>
+                        Autumn Feast photos are live in the gallery!
+                    </div>
+                </div>
+
+                <div class="info-widget">
+                    <h3>📧 Newsletter</h3>
+                    <p style="font-size: 13px; margin-bottom: 10px; line-height: 1.5;">Get weekly updates delivered to your inbox.</p>
+                    <input type="email" placeholder="Your email" style="width: 100%; padding: 8px; margin-bottom: 8px; border: 2px solid #D4AF37;">
+                    <button style="width: 100%; background: #1E3A8A; color: #D4AF37; padding: 10px; border: none; font-weight: bold; cursor: pointer;">Subscribe</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine V8: Activity Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        /* SPLIT HERO WITH CALENDAR */
+        .hero-split {
+            display: grid;
+            grid-template-columns: 55% 45%;
+            min-height: 500px;
+        }
+
+        .hero-main {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            padding: 50px 45px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-main h1 {
+            font-size: 44px;
+            color: #D4AF37;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-main p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .hero-cta {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 15px 35px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+
+        /* MINI CALENDAR IN HERO */
+        .hero-calendar {
+            background: #F5F5DC;
+            padding: 30px 25px;
+        }
+
+        .mini-cal-header {
+            color: #2D5016;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 3px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        .mini-cal-month {
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .mini-cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+            margin-bottom: 15px;
+        }
+
+        .mini-cal-header-day {
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: #2D5016;
+            padding: 5px 0;
+        }
+
+        .mini-cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            background: white;
+            border: 1px solid #ddd;
+        }
+
+        .mini-cal-day.has-event {
+            background: #D4AF37;
+            color: #2D5016;
+            font-weight: bold;
+        }
+
+        .mini-cal-day.other-month {
+            color: #ccc;
+        }
+
+        .next-event-box {
+            background: white;
+            border: 3px solid #D4AF37;
+            padding: 15px;
+        }
+
+        .next-event-box h4 {
+            color: #2D5016;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .next-event-box .event-name {
+            color: #1E3A8A;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .next-event-box .event-date {
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* DASHBOARD GRID */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+
+        .dash-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .dash-card h3 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 3px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        .practices-card {
+            grid-column: span 4;
+            background: #1E3A8A;
+            color: white;
+        }
+
+        .practices-card h3 {
+            color: #D4AF37;
+            border-bottom-color: #D4AF37;
+        }
+
+        .practice-row {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(245,245,220,0.2);
+        }
+
+        .practice-row:last-child { border-bottom: none; }
+
+        .practice-day {
+            color: #D4AF37;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .practice-details {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .events-card {
+            grid-column: span 5;
+            border: 3px solid #2D5016;
+        }
+
+        .event-item-dash {
+            padding: 15px 0;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .event-item-dash:last-child { border-bottom: none; }
+
+        .event-date-dash {
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 4px 12px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .event-title-dash {
+            color: #2D5016;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .event-desc-dash {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .news-card {
+            grid-column: span 3;
+            border: 3px solid #D4AF37;
+        }
+
+        .news-item-dash {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .news-item-dash:last-child { border-bottom: none; }
+
+        .news-date-dash {
+            color: #1E3A8A;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .news-title-dash {
+            color: #2D5016;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .welcome-card {
+            grid-column: span 7;
+            background: #F5F5DC;
+            border: 3px solid #2D5016;
+        }
+
+        .welcome-card p {
+            line-height: 1.7;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .cta-button-dash {
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 12px 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .quick-links-card {
+            grid-column: span 5;
+            background: #F5F5DC;
+            border: 3px solid #D4AF37;
+        }
+
+        .quick-link-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .quick-link-box {
+            background: white;
+            border: 2px solid #D4AF37;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-link-box:hover {
+            background: #D4AF37;
+            color: #2D5016;
+        }
+
+        .quick-link-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .quick-link-label {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 320px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .annotation h4 {
+            color: #D4AF37;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .annotation ul {
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+
+        .annotation li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">MAGAZINE V8: Activity Dashboard</div>
+
+    <div class="annotation">
+        <h4>🎯 Featured Elements:</h4>
+        <ul>
+            <li><strong>Dashboard Layout</strong> - Card-based modular design</li>
+            <li><strong>Mini Calendar</strong> - In hero sidebar</li>
+            <li><strong>Practice Schedule</strong> - Prominent card</li>
+            <li><strong>Upcoming Events</strong> - Large featured card</li>
+            <li><strong>News Feed</strong> - Latest updates</li>
+            <li><strong>Quick Links</strong> - Fast navigation</li>
+        </ul>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212,175,55,0.3);">
+            <strong>Best For:</strong><br>
+            Active baronies with lots happening - shows everything at once
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-split">
+            <div class="hero-main">
+                <h1>Your Gateway to Medieval Adventure</h1>
+                <p>Join Kentucky's most active SCA barony for weekly practices, monthly events, and kingdom-wide tournaments. From armored combat to period arts, there's always something happening!</p>
+                <button class="hero-cta">Explore Activities</button>
+            </div>
+
+            <div class="hero-calendar">
+                <div class="mini-cal-header">📅 November 2025</div>
+                <div class="mini-cal-month">This Month's Events</div>
+                <div class="mini-cal-grid">
+                    <div class="mini-cal-header-day">S</div>
+                    <div class="mini-cal-header-day">M</div>
+                    <div class="mini-cal-header-day">T</div>
+                    <div class="mini-cal-header-day">W</div>
+                    <div class="mini-cal-header-day">T</div>
+                    <div class="mini-cal-header-day">F</div>
+                    <div class="mini-cal-header-day">S</div>
+
+                    <div class="mini-cal-day other-month">26</div>
+                    <div class="mini-cal-day other-month">27</div>
+                    <div class="mini-cal-day other-month">28</div>
+                    <div class="mini-cal-day other-month">29</div>
+                    <div class="mini-cal-day other-month">30</div>
+                    <div class="mini-cal-day other-month">31</div>
+                    <div class="mini-cal-day">1</div>
+
+                    <div class="mini-cal-day">2</div>
+                    <div class="mini-cal-day">3</div>
+                    <div class="mini-cal-day">4</div>
+                    <div class="mini-cal-day">5</div>
+                    <div class="mini-cal-day has-event">6</div>
+                    <div class="mini-cal-day">7</div>
+                    <div class="mini-cal-day">8</div>
+
+                    <div class="mini-cal-day">9</div>
+                    <div class="mini-cal-day">10</div>
+                    <div class="mini-cal-day has-event">11</div>
+                    <div class="mini-cal-day">12</div>
+                    <div class="mini-cal-day has-event">13</div>
+                    <div class="mini-cal-day">14</div>
+                    <div class="mini-cal-day has-event">15</div>
+
+                    <div class="mini-cal-day">16</div>
+                    <div class="mini-cal-day">17</div>
+                    <div class="mini-cal-day">18</div>
+                    <div class="mini-cal-day">19</div>
+                    <div class="mini-cal-day has-event">20</div>
+                    <div class="mini-cal-day">21</div>
+                    <div class="mini-cal-day has-event">22</div>
+
+                    <div class="mini-cal-day">23</div>
+                    <div class="mini-cal-day">24</div>
+                    <div class="mini-cal-day">25</div>
+                    <div class="mini-cal-day">26</div>
+                    <div class="mini-cal-day has-event">27</div>
+                    <div class="mini-cal-day">28</div>
+                    <div class="mini-cal-day">29</div>
+
+                    <div class="mini-cal-day">30</div>
+                    <div class="mini-cal-day other-month">1</div>
+                    <div class="mini-cal-day other-month">2</div>
+                    <div class="mini-cal-day other-month">3</div>
+                    <div class="mini-cal-day other-month">4</div>
+                    <div class="mini-cal-day other-month">5</div>
+                    <div class="mini-cal-day other-month">6</div>
+                </div>
+
+                <div class="next-event-box">
+                    <h4>🎯 NEXT UP:</h4>
+                    <div class="event-name">Autumn Feast & Tournament</div>
+                    <div class="event-date">Saturday, Nov 22 • 2:00 PM</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- PRACTICES CARD -->
+            <div class="dash-card practices-card">
+                <h3>⚔️ Weekly Practices</h3>
+                <div class="practice-row">
+                    <div class="practice-day">Every Thursday</div>
+                    <div class="practice-details">
+                        <strong>Fighter Practice</strong><br>
+                        6:00 PM - 9:00 PM<br>
+                        Veteran's Memorial Park<br>
+                        All combat disciplines
+                    </div>
+                </div>
+                <div class="practice-row">
+                    <div class="practice-day">2nd Tuesday</div>
+                    <div class="practice-details">
+                        <strong>Arts & Sciences Night</strong><br>
+                        7:00 PM - 10:00 PM<br>
+                        Community Center<br>
+                        All crafts welcome
+                    </div>
+                </div>
+                <div class="practice-row">
+                    <div class="practice-day">2nd & 4th Sunday</div>
+                    <div class="practice-details">
+                        <strong>Archery Practice</strong><br>
+                        1:00 PM - 4:00 PM<br>
+                        Cedar Ridge Range
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPCOMING EVENTS CARD -->
+            <div class="dash-card events-card">
+                <h3>📌 Upcoming Events</h3>
+                <div class="event-item-dash">
+                    <div class="event-date-dash">SAT, NOV 22</div>
+                    <div class="event-title-dash">Autumn Feast & Tournament</div>
+                    <div class="event-desc-dash">Period feast, armored combat, entertainment</div>
+                </div>
+                <div class="event-item-dash">
+                    <div class="event-date-dash">SUN, DEC 14</div>
+                    <div class="event-title-dash">Yule Celebration</div>
+                    <div class="event-desc-dash">Gift exchange, wassail, caroling</div>
+                </div>
+                <div class="event-item-dash">
+                    <div class="event-date-dash">SAT, JAN 18</div>
+                    <div class="event-title-dash">Twelfth Night Revelry</div>
+                    <div class="event-desc-dash">A&S competitions, bardic, awards</div>
+                </div>
+            </div>
+
+            <!-- NEWS CARD -->
+            <div class="dash-card news-card">
+                <h3>📰 News</h3>
+                <div class="news-item-dash">
+                    <div class="news-date-dash">Nov 14</div>
+                    <div class="news-title-dash">Feast Menu Posted</div>
+                </div>
+                <div class="news-item-dash">
+                    <div class="news-date-dash">Nov 12</div>
+                    <div class="news-title-dash">Fighter Auths Sunday</div>
+                </div>
+                <div class="news-item-dash">
+                    <div class="news-date-dash">Nov 8</div>
+                    <div class="news-title-dash">Dec Workshops</div>
+                </div>
+                <div class="news-item-dash">
+                    <div class="news-date-dash">Nov 5</div>
+                    <div class="news-title-dash">New Members Welcome</div>
+                </div>
+            </div>
+
+            <!-- WELCOME CARD -->
+            <div class="dash-card welcome-card">
+                <h3>Welcome to Glyn Dwfn</h3>
+                <p>The Barony of Glyn Dwfn is part of the Society for Creative Anachronism (SCA), a non-profit educational organization dedicated to researching and recreating the arts, skills, and traditions of pre-17th century Europe.</p>
+                <p>Whether you're interested in armored combat, period arts, or simply enjoying the company of like-minded individuals, you'll find a welcoming community here.</p>
+                <button class="cta-button-dash">Join Us</button>
+                <button class="cta-button-dash">New Member Guide</button>
+            </div>
+
+            <!-- QUICK LINKS CARD -->
+            <div class="dash-card quick-links-card">
+                <h3>⚡ Quick Access</h3>
+                <div class="quick-link-grid">
+                    <div class="quick-link-box">
+                        <div class="quick-link-icon">📅</div>
+                        <div class="quick-link-label">Full Calendar</div>
+                    </div>
+                    <div class="quick-link-box">
+                        <div class="quick-link-icon">📷</div>
+                        <div class="quick-link-label">Photo Gallery</div>
+                    </div>
+                    <div class="quick-link-box">
+                        <div class="quick-link-icon">👥</div>
+                        <div class="quick-link-label">Officers</div>
+                    </div>
+                    <div class="quick-link-box">
+                        <div class="quick-link-icon">🗺️</div>
+                        <div class="quick-link-label">Locations</div>
+                    </div>
+                    <div class="quick-link-box">
+                        <div class="quick-link-icon">📖</div>
+                        <div class="quick-link-label">Resources</div>
+                    </div>
+                    <div class="quick-link-box">
+                        <div class="quick-link-icon">📧</div>
+                        <div class="quick-link-label">Contact</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

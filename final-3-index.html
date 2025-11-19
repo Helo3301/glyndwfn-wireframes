@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final 3 Event-Focused Wireframes - Glyn Dwfn</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            color: #333;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #D4AF37;
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            color: #F5F5DC;
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 50px;
+        }
+        .back-link {
+            background: rgba(212,175,55,0.2);
+            border: 2px solid #D4AF37;
+            color: #D4AF37;
+            padding: 12px 30px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .back-link:hover {
+            background: #D4AF37;
+            color: #2D5016;
+        }
+        .wireframe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .wireframe-card {
+            background: white;
+            border: 4px solid #D4AF37;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .wireframe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .card-header {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 20px;
+            text-align: center;
+        }
+        .card-header h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .card-header p {
+            font-size: 14px;
+            color: #F5F5DC;
+        }
+        .card-body {
+            padding: 25px;
+        }
+        .card-body ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        .card-body li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+        .card-body li:before {
+            content: "✓ ";
+            color: #2D5016;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .view-button {
+            display: block;
+            width: 100%;
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 15px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        .view-button:hover {
+            background: #2D5016;
+        }
+        .instructions {
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            border-left: 6px solid #D4AF37;
+        }
+        .instructions h3 {
+            color: #2D5016;
+            margin-bottom: 15px;
+        }
+        .instructions p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+            color: #444;
+        }
+        .feature-tag {
+            display: inline-block;
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 5px 12px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="magazine-index.html" class="back-link">← Back to Magazine Variants</a>
+
+        <h1>Final 3 Event-Focused Wireframes</h1>
+        <p class="subtitle">Combining the Best of V1 (Calendar) + V5 (Practice Schedule)</p>
+
+        <div class="instructions">
+            <h3>About These Wireframes</h3>
+            <p>These three options combine elements from Magazine V1 (Live Events Calendar) and Magazine V5 (News Feed + Practice Schedule) that you loved. Each puts <strong>events and activities front and center</strong> with beautiful, clean layouts.</p>
+            <p><strong>Key features across all three:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                <li>Events are the primary focus</li>
+                <li>Calendar integration (mini or full)</li>
+                <li>Practice schedule prominently displayed</li>
+                <li>Clean, professional visual design</li>
+                <li>Easy to scan and find information</li>
+            </ul>
+        </div>
+
+        <div class="wireframe-grid">
+            <div class="wireframe-card">
+                <div class="card-header">
+                    <h2>Magazine V6</h2>
+                    <p>Calendar + News Hybrid</p>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 15px;">
+                        <span class="feature-tag">Dual Sidebars</span>
+                        <span class="feature-tag">Calendar</span>
+                        <span class="feature-tag">News Feed</span>
+                    </div>
+                    <ul>
+                        <li>Full calendar in left sidebar</li>
+                        <li>Featured event in center</li>
+                        <li>Latest news feed</li>
+                        <li>Social media updates</li>
+                        <li>Practice schedule widget</li>
+                        <li>Maximum information density</li>
+                    </ul>
+                    <a href="magazine-v6-hybrid.html" target="_blank" class="view-button">View Wireframe →</a>
+                </div>
+            </div>
+
+            <div class="wireframe-card">
+                <div class="card-header">
+                    <h2>Magazine V7</h2>
+                    <p>Event Hero + Timeline</p>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 15px;">
+                        <span class="feature-tag">Large Hero</span>
+                        <span class="feature-tag">Timeline</span>
+                        <span class="feature-tag">Countdown</span>
+                    </div>
+                    <ul>
+                        <li>Next major event hero section</li>
+                        <li>Countdown timer to event</li>
+                        <li>Visual event timeline</li>
+                        <li>Practice schedule sidebar</li>
+                        <li>Other events quick list</li>
+                        <li>Event-driven design</li>
+                    </ul>
+                    <a href="magazine-v7-timeline.html" target="_blank" class="view-button">View Wireframe →</a>
+                </div>
+            </div>
+
+            <div class="wireframe-card">
+                <div class="card-header">
+                    <h2>Magazine V8</h2>
+                    <p>Activity Dashboard</p>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 15px;">
+                        <span class="feature-tag">Dashboard</span>
+                        <span class="feature-tag">Modular</span>
+                        <span class="feature-tag">Cards</span>
+                    </div>
+                    <ul>
+                        <li>Mini calendar in hero</li>
+                        <li>Card-based dashboard layout</li>
+                        <li>Practice schedule card</li>
+                        <li>Upcoming events card</li>
+                        <li>News feed card</li>
+                        <li>Quick links grid</li>
+                        <li>Shows everything at once</li>
+                    </ul>
+                    <a href="magazine-v8-dashboard.html" target="_blank" class="view-button">View Wireframe →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>🎯 My Top Recommendation</h3>
+            <p><strong>Magazine V6 (Calendar + News Hybrid)</strong> gives you the best of both worlds:</p>
+            <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                <li>✅ <strong>Full calendar</strong> with event highlighting (your #1 request)</li>
+                <li>✅ <strong>Practice schedule</strong> always visible (from V5)</li>
+                <li>✅ <strong>Featured event</strong> in center for maximum impact</li>
+                <li>✅ <strong>News feed</strong> keeps content fresh</li>
+                <li>✅ <strong>Social media</strong> integration shows activity</li>
+                <li>✅ <strong>Dual sidebars</strong> maximize information without clutter</li>
+            </ul>
+            <p style="margin-top: 15px;">It combines everything you loved about V1 and V5 while keeping events as the star of the show!</p>
+        </div>
+
+        <div class="instructions" style="background: rgba(212,175,55,0.1); border-left-color: #1E3A8A;">
+            <h3>📋 Summary: All Your Wireframes</h3>
+            <p>You now have <strong>13 total wireframe options</strong>:</p>
+            <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                <li><strong>Original 5</strong> - Different layout approaches (full-width, split, grid, etc.)</li>
+                <li><strong>Magazine 1-5</strong> - Variations on magazine style with different features</li>
+                <li><strong>Final 3</strong> - Event-focused hybrids combining V1 + V5 elements</li>
+            </ul>
+            <p style="margin-top: 15px;">Ready to pick one and implement it in WordPress? I can help with that too!</p>
+        </div>
+    </div>
+</body>
+</html>

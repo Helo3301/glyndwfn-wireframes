@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option 3: Immersive Hero</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        /* Navigation */
+        nav {
+            background: rgba(30, 58, 138, 0.95);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        /* Hero - IMMERSIVE WITH OVERLAP */
+        .hero-wrapper {
+            position: relative;
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            padding-bottom: 180px;
+        }
+        .hero {
+            color: white;
+            padding: 120px 40px 80px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 56px; margin-bottom: 20px; color: #D4AF37; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hero p { font-size: 22px; margin-bottom: 30px; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .hero-cta {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 18px 50px;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* Feature Cards - OVERLAPPING HERO */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 0 40px;
+            position: relative;
+            top: -120px;
+            margin-bottom: -60px;
+        }
+        .feature-card {
+            background: white;
+            border: 3px solid #2D5016;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: #1E3A8A;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+        }
+        .feature-card h3 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .feature-card p { color: #555; line-height: 1.6; }
+
+        /* Content Section */
+        .content {
+            padding: 80px 40px 60px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .content h2 {
+            color: #2D5016;
+            margin-bottom: 20px;
+            font-size: 36px;
+            text-align: center;
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        .content-box {
+            background: #F5F5DC;
+            padding: 30px;
+            border-left: 5px solid #D4AF37;
+        }
+        .content-box h3 { color: #2D5016; margin-bottom: 15px; }
+        .content p { line-height: 1.8; margin-bottom: 15px; }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            max-width: 300px;
+            font-size: 14px;
+            z-index: 200;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">WIREFRAME OPTION 3: Immersive Hero + Overlapping Cards</div>
+
+    <div class="annotation">
+        <strong>Layout Features:</strong><br>
+        • Large immersive hero<br>
+        • Cards overlap hero section<br>
+        • Modern, dynamic feel<br>
+        • Creates visual flow<br>
+        • Reduces top-heavy feeling
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-wrapper">
+            <div class="hero">
+                <h1>Welcome to Glyn Dwfn</h1>
+                <p>Experience the Middle Ages brought to life through armored combat, medieval arts, and a vibrant community. Join us in the Barony of Glyn Dwfn, where history and fellowship meet.</p>
+                <button class="hero-cta">Begin Your Journey</button>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Combat & Fencing</h3>
+                    <p>Learn armored combat, rapier fighting, and archery from experienced fighters.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Arts & Sciences</h3>
+                    <p>Explore medieval crafts, calligraphy, cooking, and historical research.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Events & Feasts</h3>
+                    <p>Join us for tournaments, feasts, and gatherings throughout the year.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>Discover Your Medieval Passion</h2>
+            <div class="content-grid">
+                <div class="content-box">
+                    <h3>About Our Barony</h3>
+                    <p>The Barony of Glyn Dwfn is part of the Society for Creative Anachronism (SCA), dedicated to researching and recreating pre-17th century European culture.</p>
+                </div>
+                <div class="content-box">
+                    <h3>Join Us</h3>
+                    <p>We meet regularly for practices, workshops, and social gatherings. New members are always welcome, no experience necessary!</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

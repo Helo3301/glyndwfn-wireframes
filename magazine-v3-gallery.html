@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine V3: Photo Gallery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        .hero-magazine {
+            display: grid;
+            grid-template-columns: 60% 40%;
+            min-height: 550px;
+        }
+
+        .hero-featured {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+
+        .hero-featured h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #D4AF37;
+            line-height: 1.2;
+        }
+
+        .hero-featured p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-cta {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 15px 35px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+
+        /* PHOTO GALLERY IN HERO SIDEBAR */
+        .hero-gallery {
+            background: #F5F5DC;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 2px;
+        }
+
+        .gallery-item {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item::before {
+            content: '📷';
+            font-size: 32px;
+            opacity: 0.3;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .gallery-item.featured {
+            grid-column: 1 / -1;
+            font-size: 18px;
+        }
+
+        .gallery-item.featured::before {
+            font-size: 48px;
+        }
+
+        .content-magazine {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 50px 40px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-block {
+            background: white;
+            border: 3px solid #2D5016;
+            padding: 35px;
+        }
+
+        .content-block.featured {
+            background: #F5F5DC;
+            border-left: 8px solid #D4AF37;
+        }
+
+        .content-block h2 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .content-block p {
+            line-height: 1.7;
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        /* INLINE PHOTO GALLERY */
+        .photo-gallery-section {
+            background: white;
+            border: 3px solid #D4AF37;
+            padding: 35px;
+        }
+
+        .photo-gallery-section h2 {
+            color: #2D5016;
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .photo-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .photo-card::before {
+            content: '📷';
+            font-size: 32px;
+            opacity: 0.5;
+        }
+
+        .photo-card:hover {
+            transform: scale(1.05);
+        }
+
+        .view-gallery-btn {
+            display: block;
+            width: 100%;
+            background: #1E3A8A;
+            color: #D4AF37;
+            padding: 15px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .sidebar-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-widget {
+            background: #1E3A8A;
+            color: white;
+            padding: 25px;
+        }
+
+        .sidebar-widget h3 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        .widget-alt {
+            background: #F5F5DC;
+            border: 3px solid #D4AF37;
+        }
+
+        .widget-alt h3 { color: #2D5016; border-bottom-color: #2D5016; }
+        .widget-alt { color: #333; }
+
+        /* RECENT PHOTOS WIDGET */
+        .recent-photos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .recent-photo {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(212,175,55,0.5);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .photo-caption {
+            font-size: 12px;
+            color: #D4AF37;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 320px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .annotation h4 {
+            color: #D4AF37;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .annotation ul {
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+
+        .annotation li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">MAGAZINE VARIANT 3: Photo Gallery Integration</div>
+
+    <div class="annotation">
+        <h4>🎯 Featured Elements:</h4>
+        <ul>
+            <li><strong>Hero Gallery</strong> - Live photos in hero sidebar</li>
+            <li><strong>Main Gallery</strong> - 4-column grid in content</li>
+            <li><strong>Recent Photos</strong> - Widget showing latest uploads</li>
+            <li><strong>Lightbox</strong> - Click to enlarge images</li>
+            <li><strong>Auto-sync</strong> - From your photo plugin</li>
+        </ul>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212,175,55,0.3);">
+            <strong>WordPress Integration:</strong><br>
+            • NextGEN Gallery or similar<br>
+            • Photo submission plugin<br>
+            • Auto-pull latest photos<br>
+            • Lightbox integration
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-magazine">
+            <div class="hero-featured">
+                <h1>Experience Medieval Life Through Our Community</h1>
+                <p>From epic tournaments to intimate arts workshops, see what makes Glyn Dwfn special through the eyes of our members.</p>
+                <button class="hero-cta">Join Our Community</button>
+            </div>
+
+            <div class="hero-gallery">
+                <div class="gallery-item featured" title="Spring Tournament 2025"></div>
+                <div class="gallery-item" title="Arts Competition"></div>
+                <div class="gallery-item" title="Fighter Practice"></div>
+                <div class="gallery-item" title="Royal Court"></div>
+                <div class="gallery-item" title="Feast Hall"></div>
+            </div>
+        </div>
+
+        <div class="content-magazine">
+            <div class="main-content">
+                <div class="content-block featured">
+                    <h2>Welcome to Glyn Dwfn</h2>
+                    <p>The Barony of Glyn Dwfn is part of the Society for Creative Anachronism (SCA), a non-profit educational organization dedicated to researching and recreating the arts, skills, and traditions of pre-17th century Europe.</p>
+                    <p>Our vibrant community comes together regularly for combat practice, arts workshops, feasts, and tournaments. Browse our photo gallery below to see what we're all about!</p>
+                </div>
+
+                <div class="photo-gallery-section">
+                    <h2>📸 Recent Event Photos</h2>
+                    <div class="photo-grid">
+                        <div class="photo-card"></div>
+                        <div class="photo-card"></div>
+                        <div class="photo-card"></div>
+                        <div class="photo-card"></div>
+                        <div class="photo-card"></div>
+                        <div class="photo-card"></div>
+                        <div class="photo-card"></div>
+                        <div class="photo-card"></div>
+                    </div>
+                    <button class="view-gallery-btn">View Full Gallery (547 Photos) →</button>
+                </div>
+
+                <div class="content-block">
+                    <h2>Share Your Photos</h2>
+                    <p>Attended one of our events? We'd love to see your photos! Members can submit photos directly through our secure upload form. All submissions are reviewed before being added to the gallery.</p>
+                    <p>By submitting photos, you grant the Barony of Glyn Dwfn permission to use them in promotional materials and on our website.</p>
+                    <button style="background: #1E3A8A; color: #D4AF37; padding: 12px 30px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px;">Upload Photos</button>
+                </div>
+            </div>
+
+            <div class="sidebar-column">
+                <div class="sidebar-widget widget-alt">
+                    <h3>📷 Latest Photos</h3>
+                    <div class="recent-photos">
+                        <div>
+                            <div class="recent-photo">📷</div>
+                            <div class="photo-caption">Nov 13</div>
+                        </div>
+                        <div>
+                            <div class="recent-photo">📷</div>
+                            <div class="photo-caption">Nov 11</div>
+                        </div>
+                        <div>
+                            <div class="recent-photo">📷</div>
+                            <div class="photo-caption">Nov 6</div>
+                        </div>
+                        <div>
+                            <div class="recent-photo">📷</div>
+                            <div class="photo-caption">Nov 2</div>
+                        </div>
+                    </div>
+                    <button style="width: 100%; background: #1E3A8A; color: #D4AF37; padding: 10px; border: none; font-weight: bold; cursor: pointer; margin-top: 15px;">View All →</button>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3>Gallery Categories</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid rgba(245,245,220,0.2);">⚔️ Combat Sports (143)</li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid rgba(245,245,220,0.2);">🎨 Arts & Sciences (89)</li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid rgba(245,245,220,0.2);">🏰 Events & Feasts (215)</li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid rgba(245,245,220,0.2);">👥 People & Portraits (67)</li>
+                        <li style="padding: 10px 0;">📜 Historical (33)</li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-widget widget-alt">
+                    <h3>Next Event</h3>
+                    <p style="margin-bottom: 10px;"><strong>Autumn Feast</strong></p>
+                    <p style="margin-bottom: 10px;">November 22, 2025<br>2:00 PM - 10:00 PM<br>Grand Hall, Louisville</p>
+                    <p style="font-size: 14px;">Join us for a period feast, entertainment, and fellowship!</p>
+                    <button style="width: 100%; background: #1E3A8A; color: #D4AF37; padding: 10px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px;">RSVP Now</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

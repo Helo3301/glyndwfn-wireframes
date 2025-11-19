@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option 1: Full-Width Hero</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        /* Navigation */
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        /* Hero - FULL WIDTH */
+        .hero {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            color: white;
+            padding: 100px 40px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 48px; margin-bottom: 20px; color: #D4AF37; }
+        .hero p { font-size: 20px; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .hero-cta {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 15px 40px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Feature Cards - HORIZONTAL LAYOUT */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 60px 40px;
+            background: #F5F5DC;
+        }
+        .feature-card {
+            background: white;
+            border: 3px solid #2D5016;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: #1E3A8A;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+        }
+        .feature-card h3 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .feature-card p { color: #555; line-height: 1.6; }
+
+        /* Content Section */
+        .content {
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .content h2 { color: #2D5016; margin-bottom: 20px; font-size: 32px; }
+        .content p { line-height: 1.8; margin-bottom: 15px; }
+
+        /* Footer */
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            max-width: 300px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">WIREFRAME OPTION 1: Full-Width Hero + Horizontal Cards</div>
+
+    <div class="annotation">
+        <strong>Layout Features:</strong><br>
+        • Full-width hero section<br>
+        • Horizontal 3-column cards<br>
+        • Wider, more spacious feel<br>
+        • Balanced vertical distribution
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero">
+            <h1>Welcome to Glyn Dwfn</h1>
+            <p>Join us in celebrating medieval arts, sciences, and combat in the heart of Kentucky. From armored combat to calligraphy, there's something for everyone in the SCA.</p>
+            <button class="hero-cta">Get Started Today</button>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Combat & Fencing</h3>
+                <p>Learn armored combat, rapier fighting, and archery from experienced fighters.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Arts & Sciences</h3>
+                <p>Explore medieval crafts, calligraphy, cooking, and historical research.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Events & Feasts</h3>
+                <p>Join us for tournaments, feasts, and gatherings throughout the year.</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>About Our Barony</h2>
+            <p>The Barony of Glyn Dwfn is part of the Society for Creative Anachronism (SCA), a non-profit educational organization dedicated to researching and recreating the arts, skills, and traditions of pre-17th century Europe.</p>
+            <p>We meet regularly for practices, workshops, and social gatherings. Whether you're interested in martial activities, arts and sciences, or simply enjoying the company of like-minded individuals, you'll find a welcoming community here.</p>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

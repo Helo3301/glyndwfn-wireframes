@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine V4: Officer Spotlight</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        .hero-magazine {
+            display: grid;
+            grid-template-columns: 60% 40%;
+            min-height: 550px;
+        }
+
+        .hero-featured {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+
+        .hero-featured h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #D4AF37;
+            line-height: 1.2;
+        }
+
+        .hero-featured p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-cta {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 15px 35px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+
+        /* OFFICER CARDS IN HERO */
+        .hero-officers {
+            background: #F5F5DC;
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .hero-officers h3 {
+            color: #2D5016;
+            font-size: 20px;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        .officer-mini {
+            display: flex;
+            gap: 15px;
+            background: white;
+            padding: 15px;
+            border: 2px solid #D4AF37;
+            align-items: center;
+        }
+
+        .officer-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #D4AF37;
+            font-size: 24px;
+        }
+
+        .officer-info h4 {
+            color: #2D5016;
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .officer-role {
+            color: #1E3A8A;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .officer-contact {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .content-magazine {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 50px 40px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-block {
+            background: white;
+            border: 3px solid #2D5016;
+            padding: 35px;
+        }
+
+        .content-block.featured {
+            background: #F5F5DC;
+            border-left: 8px solid #D4AF37;
+        }
+
+        .content-block h2 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .content-block p {
+            line-height: 1.7;
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        /* OFFICER SPOTLIGHT SECTION */
+        .officer-spotlight {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            padding: 40px;
+            color: white;
+            border: none;
+        }
+
+        .officer-spotlight h2 {
+            color: #D4AF37;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .officer-feature {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .officer-photo {
+            width: 120px;
+            height: 120px;
+            background: rgba(212,175,55,0.2);
+            border: 4px solid #D4AF37;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .officer-details h3 {
+            color: #D4AF37;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .officer-title {
+            color: #F5F5DC;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .officer-bio {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #F5F5DC;
+        }
+
+        .sidebar-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-widget {
+            background: #1E3A8A;
+            color: white;
+            padding: 25px;
+        }
+
+        .sidebar-widget h3 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        .widget-alt {
+            background: #F5F5DC;
+            border: 3px solid #D4AF37;
+        }
+
+        .widget-alt h3 { color: #2D5016; border-bottom-color: #2D5016; }
+        .widget-alt { color: #333; }
+
+        /* QUICK LINKS WIDGET */
+        .quick-links {
+            list-style: none;
+        }
+
+        .quick-link-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(245,245,220,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: padding-left 0.3s;
+        }
+
+        .quick-link-item:hover {
+            padding-left: 10px;
+        }
+
+        .quick-link-item:last-child {
+            border-bottom: none;
+        }
+
+        .link-icon {
+            font-size: 20px;
+        }
+
+        .link-text {
+            font-size: 15px;
+        }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 320px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .annotation h4 {
+            color: #D4AF37;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .annotation ul {
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+
+        .annotation li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">MAGAZINE VARIANT 4: Officer Spotlight + Quick Links</div>
+
+    <div class="annotation">
+        <h4>🎯 Featured Elements:</h4>
+        <ul>
+            <li><strong>Officer Cards</strong> - Baron/Baroness and key officers</li>
+            <li><strong>Featured Officer</strong> - Monthly spotlight with bio</li>
+            <li><strong>Quick Links</strong> - Fast access to common pages</li>
+            <li><strong>Contact Info</strong> - Direct officer contact</li>
+            <li><strong>Help Center</strong> - New member resources</li>
+        </ul>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212,175,55,0.3);">
+            <strong>WordPress Integration:</strong><br>
+            • Officers custom post type<br>
+            • Auto-populated from database<br>
+            • Email obfuscation for security
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Officers</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-magazine">
+            <div class="hero-featured">
+                <h1>Led by Dedicated Officers, Powered by Community</h1>
+                <p>The Barony of Glyn Dwfn is guided by volunteer officers who ensure our traditions thrive and our community grows. Meet the people who make it all happen.</p>
+                <button class="hero-cta">Meet All Officers</button>
+            </div>
+
+            <div class="hero-officers">
+                <h3>👑 Barony Leadership</h3>
+                <div class="officer-mini">
+                    <div class="officer-avatar">👑</div>
+                    <div class="officer-info">
+                        <h4>Baron Aldric of Kent</h4>
+                        <div class="officer-role">Baron of Glyn Dwfn</div>
+                        <div class="officer-contact">baron@glyndwfn.org</div>
+                    </div>
+                </div>
+                <div class="officer-mini">
+                    <div class="officer-avatar">👑</div>
+                    <div class="officer-info">
+                        <h4>Baroness Eleanor</h4>
+                        <div class="officer-role">Baroness of Glyn Dwfn</div>
+                        <div class="officer-contact">baroness@glyndwfn.org</div>
+                    </div>
+                </div>
+                <div class="officer-mini">
+                    <div class="officer-avatar">📜</div>
+                    <div class="officer-info">
+                        <h4>Lady Margaret of York</h4>
+                        <div class="officer-role">Seneschal (President)</div>
+                        <div class="officer-contact">seneschal@glyndwfn.org</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-magazine">
+            <div class="main-content">
+                <div class="content-block featured">
+                    <h2>Welcome to Glyn Dwfn</h2>
+                    <p>The Barony of Glyn Dwfn is part of the Society for Creative Anachronism (SCA), a non-profit educational organization dedicated to researching and recreating the arts, skills, and traditions of pre-17th century Europe.</p>
+                    <p>Our officers work tirelessly to organize events, maintain safety standards, manage finances, and ensure that everyone has a positive experience in the SCA.</p>
+                </div>
+
+                <div class="officer-spotlight">
+                    <h2>⭐ Officer Spotlight: November 2025</h2>
+                    <div class="officer-feature">
+                        <div class="officer-photo">⚔️</div>
+                        <div class="officer-details">
+                            <h3>Lord Thomas the Bold</h3>
+                            <div class="officer-title">Knight Marshal • Earl Marshal Deputy</div>
+                            <div class="officer-bio">
+                                Thomas has been organizing fighter practices for 12 years and has trained over 200 fighters in armored combat. His dedication to safety and skill-building has made Glyn Dwfn's combat program one of the strongest in Meridies.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block">
+                    <h2>All Officers</h2>
+                    <p>Our officers serve in various roles to keep the barony running smoothly. From organizing events to managing finances, each officer plays a crucial part in our community.</p>
+                    <ul style="margin-left: 20px; margin-top: 15px; line-height: 2;">
+                        <li><strong>Minister of Arts & Sciences</strong> - Coordinates workshops and competitions</li>
+                        <li><strong>Exchequer</strong> - Manages barony finances and reporting</li>
+                        <li><strong>Chronicler</strong> - Publishes newsletter and maintains records</li>
+                        <li><strong>Herald</strong> - Conducts court and assists with heraldry</li>
+                        <li><strong>Web Minister</strong> - Maintains website and social media</li>
+                    </ul>
+                    <button style="background: #1E3A8A; color: #D4AF37; padding: 12px 30px; border: none; font-weight: bold; cursor: pointer; margin-top: 20px;">View Full Officer List →</button>
+                </div>
+            </div>
+
+            <div class="sidebar-column">
+                <div class="sidebar-widget widget-alt">
+                    <h3>⚡ Quick Links</h3>
+                    <ul class="quick-links">
+                        <li class="quick-link-item">
+                            <span class="link-icon">📅</span>
+                            <span class="link-text">Events Calendar</span>
+                        </li>
+                        <li class="quick-link-item">
+                            <span class="link-icon">🗺️</span>
+                            <span class="link-text">Practice Locations</span>
+                        </li>
+                        <li class="quick-link-item">
+                            <span class="link-icon">📖</span>
+                            <span class="link-text">New Member Guide</span>
+                        </li>
+                        <li class="quick-link-item">
+                            <span class="link-icon">📧</span>
+                            <span class="link-text">Contact Officers</span>
+                        </li>
+                        <li class="quick-link-item">
+                            <span class="link-icon">📷</span>
+                            <span class="link-text">Photo Gallery</span>
+                        </li>
+                        <li class="quick-link-item">
+                            <span class="link-icon">📰</span>
+                            <span class="link-text">Newsletter</span>
+                        </li>
+                        <li class="quick-link-item">
+                            <span class="link-icon">🏛️</span>
+                            <span class="link-text">Kingdom Website</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3>Need Help?</h3>
+                    <p style="margin-bottom: 15px;"><strong>New Member Resources</strong></p>
+                    <ul style="list-style: none;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid rgba(245,245,220,0.2);">🎯 Getting Started Guide</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid rgba(245,245,220,0.2);">❓ Frequently Asked Questions</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid rgba(245,245,220,0.2);">👥 Find a Mentor</li>
+                        <li style="padding: 8px 0;">📞 Contact Chatelaine</li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-widget widget-alt">
+                    <h3>Next Practice</h3>
+                    <p style="margin-bottom: 10px;"><strong>Fighter Practice</strong></p>
+                    <p style="margin-bottom: 10px;">Thursday, Nov 20<br>6:00 PM - 9:00 PM<br>Veteran's Memorial Park</p>
+                    <p style="font-size: 14px;">All combat disciplines welcome. Loaner gear available!</p>
+                    <button style="width: 100%; background: #1E3A8A; color: #D4AF37; padding: 10px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px;">Get Directions</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

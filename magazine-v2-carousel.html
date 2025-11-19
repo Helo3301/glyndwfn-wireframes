@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine V2: Event Carousel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        /* CAROUSEL HERO */
+        .hero-carousel {
+            position: relative;
+            height: 600px;
+            overflow: hidden;
+        }
+
+        .carousel-slide {
+            display: grid;
+            grid-template-columns: 65% 35%;
+            height: 100%;
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+        }
+
+        .carousel-content {
+            padding: 80px 60px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .event-badge {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 8px 20px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 20px;
+            align-self: flex-start;
+        }
+
+        .carousel-content h1 {
+            font-size: 52px;
+            color: #D4AF37;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .event-details {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #F5F5DC;
+        }
+
+        .event-details strong {
+            color: #D4AF37;
+        }
+
+        .carousel-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .carousel-cta {
+            display: flex;
+            gap: 15px;
+        }
+
+        .cta-primary {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 15px 35px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: #D4AF37;
+            padding: 15px 35px;
+            border: 2px solid #D4AF37;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .carousel-image {
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: rgba(255,255,255,0.3);
+            border-left: 5px solid #D4AF37;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 60px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(245,245,220,0.4);
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: #D4AF37;
+            width: 40px;
+            border-radius: 6px;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            right: 40px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            background: rgba(212,175,55,0.3);
+            border: 2px solid #D4AF37;
+            color: #D4AF37;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-arrow:hover {
+            background: #D4AF37;
+            color: #2D5016;
+        }
+
+        .content-magazine {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 50px 40px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-block {
+            background: white;
+            border: 3px solid #2D5016;
+            padding: 35px;
+        }
+
+        .content-block.featured {
+            background: #F5F5DC;
+            border-left: 8px solid #D4AF37;
+        }
+
+        .content-block h2 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .content-block p {
+            line-height: 1.7;
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        .sidebar-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-widget {
+            background: #1E3A8A;
+            color: white;
+            padding: 25px;
+        }
+
+        .sidebar-widget h3 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 10px;
+        }
+
+        .widget-alt {
+            background: #F5F5DC;
+            border: 3px solid #D4AF37;
+        }
+
+        .widget-alt h3 { color: #2D5016; border-bottom-color: #2D5016; }
+        .widget-alt { color: #333; }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: rgba(212,175,55,0.2);
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #D4AF37;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2D5016;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 320px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .annotation h4 {
+            color: #D4AF37;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .annotation ul {
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+
+        .annotation li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">MAGAZINE VARIANT 2: Featured Event Carousel Hero</div>
+
+    <div class="annotation">
+        <h4>🎯 Featured Elements:</h4>
+        <ul>
+            <li><strong>Event Carousel</strong> - Rotating featured events in hero</li>
+            <li><strong>Event Details</strong> - Date, time, location inline</li>
+            <li><strong>Dual CTAs</strong> - Register + Learn More buttons</li>
+            <li><strong>Auto-rotate</strong> - 5-second intervals with manual controls</li>
+            <li><strong>Quick Stats</strong> - Member count, events, etc.</li>
+        </ul>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(212,175,55,0.3);">
+            <strong>WordPress Integration:</strong><br>
+            • Featured Events custom post type<br>
+            • JavaScript carousel plugin<br>
+            • Auto-pull from Events Manager
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-carousel">
+            <div class="carousel-slide">
+                <div class="carousel-content">
+                    <div class="event-badge">⚔️ UPCOMING EVENT</div>
+                    <h1>Spring Coronation Tournament</h1>
+                    <div class="event-details">
+                        <strong>📅 April 12, 2025</strong> | 9:00 AM - 8:00 PM<br>
+                        <strong>📍 Veterans Memorial Park</strong>, Louisville, KY
+                    </div>
+                    <p>Watch as fighters from across the Kingdom compete for the Crown! Featuring heavy armored combat, rapier tournaments, arts & sciences displays, merchants, and a royal feast.</p>
+                    <div class="carousel-cta">
+                        <button class="cta-primary">Register to Attend</button>
+                        <button class="cta-secondary">Event Details</button>
+                    </div>
+                </div>
+                <div class="carousel-image">
+                    [Event<br>Photo]
+                </div>
+            </div>
+
+            <div class="carousel-dots">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+
+            <div class="carousel-nav">
+                <div class="nav-arrow">↑</div>
+                <div class="nav-arrow">↓</div>
+            </div>
+        </div>
+
+        <div class="content-magazine">
+            <div class="main-content">
+                <div class="content-block featured">
+                    <h2>Welcome to Glyn Dwfn</h2>
+                    <p>The Barony of Glyn Dwfn is part of the Society for Creative Anachronism (SCA), a non-profit educational organization dedicated to researching and recreating the arts, skills, and traditions of pre-17th century Europe.</p>
+                    <p>Our barony serves central Kentucky, bringing together people passionate about history, combat sports, period arts, and medieval culture.</p>
+                </div>
+
+                <div class="content-block">
+                    <h2>Getting Started</h2>
+                    <p>New to the SCA? No problem! We welcome newcomers of all ages and backgrounds. Come to one of our weekly practices or monthly events to meet our members, try on armor, and learn about what we do.</p>
+                    <p>Loaner gear is available for combat activities, and our artisans are always happy to share their knowledge and help you discover your medieval passion.</p>
+                </div>
+            </div>
+
+            <div class="sidebar-column">
+                <div class="sidebar-widget widget-alt">
+                    <h3>Quick Facts</h3>
+                    <div class="quick-stats">
+                        <div class="stat-box">
+                            <div class="stat-number">150+</div>
+                            <div class="stat-label">Active Members</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">24</div>
+                            <div class="stat-label">Events/Year</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">35</div>
+                            <div class="stat-label">Years Active</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Guilds</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3>Weekly Activities</h3>
+                    <p style="margin-bottom: 15px;"><strong>Thursday - Fighter Practice</strong><br>6:00 PM - 9:00 PM<br>All combat disciplines</p>
+                    <p style="margin-bottom: 15px;"><strong>2nd Tuesday - Arts Night</strong><br>7:00 PM - 10:00 PM<br>All arts & sciences</p>
+                    <p><strong>2nd Sunday - Archery</strong><br>1:00 PM - 4:00 PM<br>Target & combat archery</p>
+                </div>
+
+                <div class="sidebar-widget widget-alt">
+                    <h3>Join Our Newsletter</h3>
+                    <p style="margin-bottom: 15px;">Get weekly updates on practices, events, and barony news delivered to your inbox.</p>
+                    <input type="email" placeholder="Your email" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid #D4AF37;">
+                    <button style="width: 100%; background: #1E3A8A; color: #D4AF37; padding: 12px; border: none; font-weight: bold; cursor: pointer;">Subscribe</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>

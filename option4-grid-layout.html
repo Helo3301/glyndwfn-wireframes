@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option 4: Modern Grid</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .wireframe-label {
+            background: #2D5016;
+            color: #D4AF37;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container { max-width: 1400px; margin: 0 auto; background: white; }
+
+        /* Navigation */
+        nav {
+            background: #1E3A8A;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo { color: #D4AF37; font-size: 24px; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #F5F5DC; text-decoration: none; }
+
+        /* Hero - COMPACT */
+        .hero {
+            background: linear-gradient(135deg, #2D5016 0%, #1E3A8A 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 42px; margin-bottom: 15px; color: #D4AF37; }
+        .hero p { font-size: 18px; max-width: 700px; margin: 0 auto; }
+
+        /* MODERN GRID LAYOUT */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .grid-item {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .grid-large {
+            grid-column: span 6;
+            min-height: 300px;
+            background: #F5F5DC;
+            border: 3px solid #2D5016;
+        }
+
+        .grid-medium {
+            grid-column: span 4;
+            min-height: 250px;
+            background: white;
+            border: 3px solid #1E3A8A;
+        }
+
+        .grid-small {
+            grid-column: span 3;
+            min-height: 200px;
+            background: white;
+            border: 3px solid #D4AF37;
+        }
+
+        .grid-wide {
+            grid-column: span 8;
+            min-height: 200px;
+            background: #F5F5DC;
+            border: 3px solid #2D5016;
+        }
+
+        .grid-sidebar {
+            grid-column: span 4;
+            min-height: 200px;
+            background: #1E3A8A;
+            color: white;
+        }
+
+        .grid-item h2 {
+            color: #2D5016;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .grid-sidebar h2 { color: #D4AF37; }
+
+        .grid-item h3 {
+            color: #2D5016;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .grid-item p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .grid-sidebar p { color: #F5F5DC; }
+
+        .icon-placeholder {
+            width: 60px;
+            height: 60px;
+            background: #1E3A8A;
+            margin-bottom: 15px;
+            border-radius: 50%;
+        }
+
+        .grid-sidebar .icon-placeholder { background: #D4AF37; }
+
+        .cta-button {
+            background: #D4AF37;
+            color: #2D5016;
+            padding: 12px 30px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            align-self: flex-start;
+        }
+
+        footer {
+            background: #1E3A8A;
+            color: #F5F5DC;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .annotation {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            max-width: 300px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-label">WIREFRAME OPTION 4: Modern Grid-Based Layout</div>
+
+    <div class="annotation">
+        <strong>Layout Features:</strong><br>
+        • 12-column grid system<br>
+        • Variable block sizes<br>
+        • Compact hero<br>
+        • Content-focused<br>
+        • Modern, spacious feel<br>
+        • No top-heavy issue
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">Barony of Glyn Dwfn</div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Getting Started</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero">
+            <h1>Welcome to Glyn Dwfn</h1>
+            <p>Join Kentucky's premier SCA barony for medieval combat, arts, and fellowship</p>
+        </div>
+
+        <div class="grid-container">
+            <!-- Row 1: Two large blocks -->
+            <div class="grid-item grid-large">
+                <div class="icon-placeholder"></div>
+                <h2>Combat Sports</h2>
+                <p>Experience armored combat, rapier fighting, and archery. Train with skilled fighters every week at our practice sessions. All equipment provided for beginners.</p>
+                <button class="cta-button">Start Fighting</button>
+            </div>
+
+            <div class="grid-item grid-large">
+                <div class="icon-placeholder"></div>
+                <h2>Arts & Sciences</h2>
+                <p>Explore calligraphy, illumination, brewing, cooking, sewing, and more. Share your research and learn from master artisans in our community.</p>
+                <button class="cta-button">Explore Arts</button>
+            </div>
+
+            <!-- Row 2: Three medium blocks -->
+            <div class="grid-item grid-medium">
+                <div class="icon-placeholder"></div>
+                <h3>Events Calendar</h3>
+                <p>Monthly tournaments, quarterly feasts, and annual events throughout the Kingdom of Meridies.</p>
+            </div>
+
+            <div class="grid-item grid-medium">
+                <div class="icon-placeholder"></div>
+                <h3>New Members</h3>
+                <p>No experience required! We provide loaner gear and mentor programs for newcomers.</p>
+            </div>
+
+            <div class="grid-item grid-medium">
+                <div class="icon-placeholder"></div>
+                <h3>Officers</h3>
+                <p>Meet our Baron, Baroness, Seneschal, and other officers serving the barony.</p>
+            </div>
+
+            <!-- Row 3: Wide content + sidebar -->
+            <div class="grid-item grid-wide">
+                <h2>About Our Barony</h2>
+                <p>The Barony of Glyn Dwfn is part of the Society for Creative Anachronism (SCA), a non-profit educational organization dedicated to researching and recreating the arts, skills, and traditions of pre-17th century Europe.</p>
+                <p style="margin-top: 15px;">We meet regularly for combat practices, arts workshops, and social gatherings. Whether you're drawn to the thrill of armored combat, the precision of period crafts, or the warmth of medieval fellowship, you'll find your place here.</p>
+            </div>
+
+            <div class="grid-item grid-sidebar">
+                <h2>Join Us</h2>
+                <p><strong>Fighter Practice:</strong><br>Every Thursday, 6-9 PM</p>
+                <p style="margin-top: 15px;"><strong>Arts Night:</strong><br>2nd Tuesday, 7-10 PM</p>
+                <p style="margin-top: 15px;"><strong>Next Event:</strong><br>Spring Coronation<br>April 12, 2025</p>
+                <button class="cta-button">Get Directions</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Barony of Glyn Dwfn | Part of the Kingdom of Meridies, SCA Inc.</p>
+        </footer>
+    </div>
+</body>
+</html>
